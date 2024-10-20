@@ -56,7 +56,7 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int hour = 15, minute = 8, second = 50;
+int hour = 15, minute = 1, second = 53;
 void updateClockBuffer();
 /* USER CODE END 0 */
 
@@ -98,23 +98,11 @@ int main(void)
 
   while (1)
   {
-	  second++;
-	  if(second >= 60){
-		  second = 0 ;
-		  minute++;
-	  }
-	  if(minute >= 60){
-		  minute = 0;
-		  hour++;
-	  }
-	  if(hour >= 24 ){
-		  hour = 0;
-	  }
-	  updateClockBuffer();
-	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
   }
   /* USER CODE END 3 */
 }
@@ -243,7 +231,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 const int MAX_LED = 4;
 int index_led = 0;
-int led_buffer[4] = {0, 0, 0, 0};
+int led_buffer[4];
 void update7SEG(int index){
 	switch(index){
 	case 0:
@@ -281,31 +269,58 @@ void update7SEG(int index){
 
 int counter = 25;
 int ledCounter = 100;
+int timer = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
-	counter--;
-	if(counter <= 0){
-		counter = 25;
-		if(index_led >= MAX_LED ) index_led = 0;
-		update7SEG(index_led);
-		index_led = (index_led + 1) % MAX_LED;
-	}
-	ledCounter--;
-	if(ledCounter <= 0){
-		ledCounter = 100 ;
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	if (timer == 100){
+		second++;
+		if(second >= 60){
+			second = 0 ;
+			minute++;
+		}
+		if(minute >= 60){
+			minute = 0;
+			hour++;
+		}
+		if(hour >= 24 ){
+			hour = 0;
+		}
+		updateClockBuffer();
+
 		HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+		timer = 0;
+	}
+	timer++;
+	counter--;
+	ledCounter--;
+	if(counter <= 0){
+		update7SEG(index_led);
+		++index_led;
+		if (index_led >= 4)
+		{
+			index_led = 0;
+		}
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		counter = 25;
+	}
+	if(ledCounter <= 0){
+
+		ledCounter = 100 ;
 	}
 }
 
 void updateClockBuffer(){
-     // Update hours
-     led_buffer[0] = hour / 10;
-     led_buffer[1] = hour % 10;
+	led_buffer[0] = (hour / 10) % 10;
+	led_buffer[1] = hour % 10;
 
-     // Update minutes
-     led_buffer[2] = minute / 10;
-     led_buffer[3] = minute % 10;
- }
+	if (minute < 10) {
+		led_buffer[2] = 0;
+		led_buffer[3] = minute;
+	}
+	else {
+		led_buffer[2] = (minute / 10) % 10;
+		led_buffer[3] = minute % 10;
+	}
+}
 
 /* USER CODE END 4 */
 
