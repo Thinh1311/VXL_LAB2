@@ -223,8 +223,9 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 int counter = 50;
-int status = 0;
+int status = 1;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
+	counter--;
 	if(counter <= 0){
 		counter = 50;
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
