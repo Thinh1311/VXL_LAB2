@@ -1029,7 +1029,7 @@ void update7SEG(int index){
  80007ac:	40010800 	.word	0x40010800
 
 080007b0 <HAL_TIM_PeriodElapsedCallback>:
-int counter = 50;
+int counter = 25;
 int ledCounter = 100;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
  80007b0:	b580      	push	{r7, lr}
@@ -1053,9 +1053,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
  80007ce:	681b      	ldr	r3, [r3, #0]
  80007d0:	2b00      	cmp	r3, #0
  80007d2:	dc16      	bgt.n	8000802 <HAL_TIM_PeriodElapsedCallback+0x52>
-		counter = 50;
+		counter = 25;
  80007d4:	4b12      	ldr	r3, [pc, #72]	; (8000820 <HAL_TIM_PeriodElapsedCallback+0x70>)
- 80007d6:	2232      	movs	r2, #50	; 0x32
+ 80007d6:	2219      	movs	r2, #25
  80007d8:	601a      	str	r2, [r3, #0]
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
  80007da:	2120      	movs	r1, #32
