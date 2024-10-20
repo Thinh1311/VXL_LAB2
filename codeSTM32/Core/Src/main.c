@@ -258,6 +258,8 @@ void update7SEG(int index){
 		HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
 		HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
 		break;
+	default:
+		break;
 	}
 }
 int counter = 25;
