@@ -182,10 +182,11 @@ int main(void)
 		  }
 		  updateClockBuffer();
 		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
 	  if(timer1_flag == 1){
 		  setTimer1(250);
-		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+
 
 		  if(index_led >= MAX_LED ) index_led = 0 ;
 		  update7SEG(index_led++);
